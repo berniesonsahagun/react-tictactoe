@@ -1,3 +1,28 @@
+:root {
+	--color-surface: #1b262c;
+	--color-solid: #0f4c75;
+	--color-secondary: #3282b8;
+	--color-primary: #bbe1fa;
+	font: 14px "Century Gothic", Futura, sans-serif;
+}
+
+html {
+	background: var(--color-surface);
+	color: var(--color-primary);
+}
+
 body {
-	background-color: aqua;
+	margin: 0;
+}
+
+ol,
+ul {
+	padding-left: 30px;
+}
+
+.App {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

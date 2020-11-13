@@ -64,6 +64,9 @@ export default class Game extends React.Component {
 		}
 		return (
 			<div className="game">
+				<div className="game-title">
+					<h1>Tic-Tac-Toe</h1>
+				</div>
 				<div className="game-board">
 					<Board
 						squares={current.squares}
@@ -72,7 +75,6 @@ export default class Game extends React.Component {
 				</div>
 				<div className="game-info">
 					<div>{status}</div>
-					<ol>{moves}</ol>
 				</div>
 			</div>
 		);
