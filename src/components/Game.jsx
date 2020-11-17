@@ -1,7 +1,8 @@
 import React from "react";
 import calculateWinner from "utils/calculateWinner";
 import Board from "components/Board";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUndo, faRedo, faSync } from "@fortawesome/free-solid-svg-icons";
 export default class Game extends React.Component {
 	constructor(props) {
 		super(props);
@@ -42,19 +43,51 @@ export default class Game extends React.Component {
 		});
 	}
 
+	resetGame() {
+		this.setState({
+			history: [
+				{
+					squares: Array(9).fill(null),
+				},
+			],
+			xIsNext: true,
+			stepNumber: 0,
+		});
+	}
+
 	render() {
 		const history = this.state.history;
-		const current = history[this.state.stepNumber];
+		const stepNumber = this.state.stepNumber;
+		const current = history[stepNumber];
 		const winner = calculateWinner(current.squares);
 
-		const moves = history.map((step, move) => {
-			const desc = move ? `Go to move #${move}` : "Go to game start";
-			return (
-				<li key={move}>
-					<button onClick={() => this.jumpTo(move)}>{desc}</button>
-				</li>
-			);
-		});
+		const undoButton = (
+			<button
+				onClick={() => this.jumpTo(stepNumber - 1 > 0 ? stepNumber - 1 : 0)}
+			>
+				<FontAwesomeIcon icon={faUndo} />
+			</button>
+		);
+
+		const redoButton = (
+			<button
+				onClick={() =>
+					this.jumpTo(
+						stepNumber + 1 < history.length - 1
+							? stepNumber + 1
+							: history.length - 1
+					)
+				}
+			>
+				<FontAwesomeIcon icon={faRedo} />
+			</button>
+		);
+
+		const restartButton = (
+			<button onClick={() => this.resetGame()}>
+				<FontAwesomeIcon icon={faSync} />
+			</button>
+		);
 
 		let status;
 		if (winner) {
@@ -62,6 +95,7 @@ export default class Game extends React.Component {
 		} else {
 			status = `Next player: ${this.state.xIsNext ? "X" : "O"}`;
 		}
+
 		return (
 			<div className="game">
 				<div className="game-title">
@@ -75,6 +109,11 @@ export default class Game extends React.Component {
 				</div>
 				<div className="game-info">
 					<div>{status}</div>
+					<div>{restartButton}</div>
+					<div>
+						{undoButton}
+						{redoButton}
+					</div>
 				</div>
 			</div>
 		);
